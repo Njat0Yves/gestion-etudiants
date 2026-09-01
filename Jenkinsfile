@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         SONAR_TOKEN = credentials('sonar-token')
+        DB_PASSWORD = credentials('db-password')
     }
 
     stages {
