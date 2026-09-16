@@ -56,14 +56,14 @@ pipeline {
             }
         }
 
-        stage('Déploiement application') {
+         stage('Déploiement application') {
             steps {
                 bat '''
                     for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8090 ^| findstr LISTENING') do taskkill /F /PID %%a
                     timeout /t 2
                     copy /Y target\\demo-0.0.1-SNAPSHOT.jar C:\\Deploy\\gestion-etudiants\\app.jar
-                    start "GestionEtudiants" /D C:\\Deploy\\gestion-etudiants cmd /c "set DB_PASSWORD=%DB_PASSWORD% && java -jar app.jar > logs\\out.log 2> logs\\err.log"
                 '''
+                bat 'C:\\Deploy\\gestion-etudiants\\restart-app.bat %DB_PASSWORD%'
             }
         }
     }
