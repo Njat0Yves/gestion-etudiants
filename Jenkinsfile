@@ -60,10 +60,10 @@ pipeline {
             steps {
                 bat '''
                     for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8090 ^| findstr LISTENING') do taskkill /F /PID %%a
-                    timeout /t 2
+                    ping -n 3 127.0.0.1 > nul
                     copy /Y target\\demo-0.0.1-SNAPSHOT.jar C:\\Deploy\\gestion-etudiants\\app.jar
                 '''
-                bat 'C:\\Deploy\\gestion-etudiants\\restart-app.bat %DB_PASSWORD%'
+                bat 'powershell -ExecutionPolicy Bypass -File C:\\Deploy\\gestion-etudiants\\restart-app.ps1 -dbPassword %DB_PASSWORD%'
             }
         }
     }
